@@ -1,12 +1,20 @@
 import React, { useRef, useEffect } from 'react'
-import { DEG2RAD, useWorld, useSyncState } from 'hyperfy'
+import { DEG2RAD, useWorld, useSyncState, useSignal } from 'hyperfy'
 
 import { Tween } from './Tween'
+
+
+// Stealing Fields
+function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
+
+
 
 export function Door({ name, position, startOpen = false }) {
   const bodyRef = useRef()
   const audioRef = useRef()
   const world = useWorld()
+  
   const [door, dispatch] = useSyncState(state => {
     const door = state.doors[name]
     if (door) {
@@ -24,12 +32,32 @@ export function Door({ name, position, startOpen = false }) {
     // Does Not Work
     audioRef.current.play() 
     dispatch('setDoor', name, !door.open, world.getServerTime())
-    const name = world.getAvatar().name
-    world.chat(`${name} has opened a door!`)
+    const Aname = world.getAvatar().name
+    world.chat(`${Aname} has ${door.open ? 'closed' : 'opened'} the door`)
+    // open2()
+
+  }
+
+  function close1() {
+
+    // Does Not Work
+    audioRef.current.play() 
+    dispatch('setDoor', name, door.closeTween, world.getServerTime())
+
+    // open2()
 
   }
 
 
+
+
+
+
+  // function open2() {
+  //   dispatch('setDoor', name, !door.open, world.getServerTime())
+  // }
+  useSignal('Open', open1)
+  useSignal('Close', close1)
 
   useEffect(() => {
     const body = bodyRef.current
@@ -59,6 +87,7 @@ export function Door({ name, position, startOpen = false }) {
           spatial={true} 
           loop={false} />
     </rigidbody>
+    
   )
 }
 
@@ -74,6 +103,7 @@ export function getInitialDoorState() {
     },
   }
 }
+
 
 export function getDoorActions() {
   return {
@@ -105,3 +135,4 @@ const closeTween = new Tween({ rotationY: 135 * DEG2RAD }).to(
   4,
   Tween.QUAD_IN_OUT
 )
+
