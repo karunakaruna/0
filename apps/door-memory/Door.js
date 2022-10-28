@@ -6,7 +6,6 @@ import { Tween } from './Tween'
 export function Door({ name, position, startOpen = false }) {
   const bodyRef = useRef()
   const audioRef = useRef()
-
   const world = useWorld()
   const [door, dispatch] = useSyncState(state => {
     const door = state.doors[name]
@@ -19,6 +18,16 @@ export function Door({ name, position, startOpen = false }) {
       }
     }
   })
+
+  function open1() {
+    // setVisible1(false)
+    // const name = world.getAvatar().name
+    // world.chat(`${name} has opened a door!`)
+    audioRef.current.play()
+    dispatch('setDoor', name, !door.open, world.getServerTime())
+  }
+
+
 
   useEffect(() => {
     const body = bodyRef.current
@@ -37,10 +46,8 @@ export function Door({ name, position, startOpen = false }) {
         ref={bodyRef}
         src="door_r.glb"
         collision="trimesh"
-        onClick={() =>
-          dispatch('setDoor', name, !door.open, world.getServerTime())
-          audioRef.current.play()
-        }/>
+        onClick={open1}
+        />
       <audio 
           ref={audioRef}
           src="chime1.wav" 
