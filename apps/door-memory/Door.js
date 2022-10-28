@@ -20,11 +20,13 @@ export function Door({ name, position, startOpen = false }) {
   })
 
   function open1() {
-    // setVisible1(false)
+
+    // Does Not Work
+    audioRef.current.play() 
+    dispatch('setDoor', name, !door.open, world.getServerTime())
     const name = world.getAvatar().name
     world.chat(`${name} has opened a door!`)
-    audioRef.current.play()
-    dispatch('setDoor', name, !door.open, world.getServerTime())
+
   }
 
 
