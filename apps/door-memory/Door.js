@@ -3,13 +3,6 @@ import { DEG2RAD, useWorld, useSyncState, useSignal } from 'hyperfy'
 
 import { Tween } from './Tween'
 
-
-// Stealing Fields
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-var React__default = /*#__PURE__*/_interopDefaultLegacy(React);
-
-
-
 export function Door({ name, position, startOpen = false }) {
   const bodyRef = useRef()
   const audioRef = useRef()
@@ -28,34 +21,18 @@ export function Door({ name, position, startOpen = false }) {
   })
 
   function open1() {
-
-    // Does Not Work
     audioRef.current.play() 
     dispatch('setDoor', name, !door.open, world.getServerTime())
     const Aname = world.getAvatar().name
-    world.chat(`${Aname} has ${door.open ? 'closed' : 'opened'} the door`)
-    // open2()
+    world.chat(`${Aname} has ${door.open ? 'closed' : 'opened'} a door`)
 
   }
 
   function close1() {
-
-    // Does Not Work
     audioRef.current.play() 
     dispatch('setDoor', name, door.closeTween, world.getServerTime())
-
-    // open2()
-
   }
 
-
-
-
-
-
-  // function open2() {
-  //   dispatch('setDoor', name, !door.open, world.getServerTime())
-  // }
   useSignal('Open', open1)
   useSignal('Close', close1)
 
@@ -125,12 +102,12 @@ export function getDoorActions() {
 
 // DOOR ANIMATION
 const openTween = new Tween({ rotationY: 0 }).to(
-  { rotationY: 135 * DEG2RAD },
+  { rotationY: 5 },
   4,
   Tween.QUAD_IN_OUT
 )
 
-const closeTween = new Tween({ rotationY: 135 * DEG2RAD }).to(
+const closeTween = new Tween({ rotationY: 5 }).to(
   { rotationY: 0 },
   4,
   Tween.QUAD_IN_OUT
